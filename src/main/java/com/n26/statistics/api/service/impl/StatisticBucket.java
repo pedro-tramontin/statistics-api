@@ -3,6 +3,11 @@ package com.n26.statistics.api.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * The bucket that is inserted in the memory map.
+ *
+ * Each bucket represents all the transactions that happened in a specific second.
+ */
 @AllArgsConstructor
 @Data
 public class StatisticBucket {
@@ -15,14 +20,20 @@ public class StatisticBucket {
 
     private long count;
 
-    public StatisticBucket(double sum) {
-        this.sum = sum;
-        this.max = sum;
-        this.min = sum;
-        this.count = 1L;
+    /**
+     * Creates a bucket with a initial amount value.
+     */
+    StatisticBucket(double amount) {
+        this.sum = amount;
+        this.max = amount;
+        this.min = amount;
+        this.count = 1;
     }
 
-    public StatisticBucket merge(StatisticBucket other) {
+    /**
+     * Merges a bucket with another bucket.
+     */
+    private StatisticBucket merge(StatisticBucket other) {
         updateSum(other.getSum());
         updateMaxIfGreater(other.getMax());
         updateMinIfLesser(other.getMin());
@@ -31,31 +42,49 @@ public class StatisticBucket {
         return this;
     }
 
-    public double getAvg() {
+    /**
+     * Calculates the average with the sum and count in this bucket.
+     */
+    double getAvg() {
         return this.sum / this.count;
     }
 
-    private void updateSum(double sum) {
-        this.sum += sum;
+    /**
+     * Increments the sum in this bucket with the amount.
+     */
+    private void updateSum(double amount) {
+        this.sum += amount;
     }
 
-    private void updateMaxIfGreater(double sum) {
-        if (max < sum) {
-            this.max = sum;
+    /**
+     * Updates the max value for this bucket when the amount is greater.
+     */
+    private void updateMaxIfGreater(double amount) {
+        if (max < amount) {
+            this.max = amount;
         }
     }
 
-    private void updateMinIfLesser(double sum) {
-        if (min > sum) {
-            this.min = sum;
+    /**
+     * Updates the min value for this bucket when the amount is lesser.
+     */
+    private void updateMinIfLesser(double amount) {
+        if (min > amount) {
+            this.min = amount;
         }
     }
 
+    /**
+     * Increments the count in this bucket with the count informed.
+     */
     private void updateCount(long count) {
         this.count += count;
     }
 
-    public static StatisticBucket merger(StatisticBucket b1, StatisticBucket b2) {
+    /**
+     * Merger method for two buckets.
+     */
+    static StatisticBucket merger(StatisticBucket b1, StatisticBucket b2) {
 
         if (b1 != null) {
             return b1.merge(b2);

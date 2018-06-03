@@ -30,7 +30,6 @@ public class TransactionControllerTest extends BaseTests {
     public void validTransaction() throws Exception {
 
         buckets.clear();
-
         TransactionRequest request = new TransactionRequest(randomAmount(), Instant.now());
 
         super.mvc.perform(post(TransactionController.BASE_URL)
@@ -38,7 +37,7 @@ public class TransactionControllerTest extends BaseTests {
             .content(mapper.writeValueAsString(request)))
             .andExpect(status().isCreated())
             .andDo(print())
-            .andDo(document("home"));
+            .andDo(document(REST_DOCS_DIR));
 
         isTrue(buckets.size() == 1, "buckets should have 1 item");
     }
@@ -49,14 +48,14 @@ public class TransactionControllerTest extends BaseTests {
         buckets.clear();
 
         Instant invalidTimestamp = Instant.now().minus(60, ChronoUnit.SECONDS);
-
         TransactionRequest request = new TransactionRequest(randomAmount(), invalidTimestamp);
 
         super.mvc.perform(post(TransactionController.BASE_URL)
             .contentType(APPLICATION_JSON_VALUE)
             .content(mapper.writeValueAsString(request)))
             .andExpect(status().isNoContent())
-            .andDo(print());
+            .andDo(print())
+            .andDo(document(REST_DOCS_DIR));
 
         isTrue(buckets.size() == 0, "buckets should be empty");
     }

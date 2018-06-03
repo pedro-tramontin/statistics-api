@@ -3,7 +3,6 @@ package com.n26.statistics.api.controller.exception.handler;
 import com.n26.statistics.api.controller.validator.annotation.NotTooOld;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +19,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RequiredArgsConstructor
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private final MessageSource messageSource;
-
+    /**
+     * Captures the MethodArgumentNotValidException exception to change the http status to
+     * NO_CONTENT.
+     *
+     * This exception is launched when the validation for the transaction fails, in case it is older
+     * than 60 seconds.
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,

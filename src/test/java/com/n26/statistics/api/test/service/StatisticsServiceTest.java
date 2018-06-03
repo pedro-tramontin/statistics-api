@@ -38,7 +38,7 @@ public class StatisticsServiceTest {
     @Test
     public void putTransaction() {
 
-        double amount = 12.5;
+        double amount = randomAmount();
 
         statisticsService.put(new TransactionRequest(amount, Instant.now()));
     }
@@ -107,6 +107,9 @@ public class StatisticsServiceTest {
         isTrue(buckets.size() == 60, "buckets should have 60 items");
     }
 
+    //////////
+    // Auxiliary methods used to store transactions and test average time for statistics retrieval
+    //
     private boolean isLess(final long valueNano, final long avgNano) {
 
         Duration value = Duration.of(valueNano, ChronoUnit.NANOS);

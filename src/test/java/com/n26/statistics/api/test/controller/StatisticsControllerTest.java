@@ -5,6 +5,7 @@ import static com.n26.statistics.api.test.utils.FakeData.randomAmount;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,7 +65,8 @@ public class StatisticsControllerTest extends BaseTests {
             .andExpect(jsonPath("$.max", is(0.00)))
             .andExpect(jsonPath("$.min", is(0.00)))
             .andExpect(jsonPath("$.count", is(0)))
-            .andDo(print());
+            .andDo(print())
+            .andDo(document(REST_DOCS_DIR));
 
         isTrue(buckets.size() == 0, "buckets should be empty");
     }
@@ -75,7 +77,6 @@ public class StatisticsControllerTest extends BaseTests {
         buckets.clear();
 
         double amount = randomAmount();
-
         statisticsService.put(new TransactionRequest(amount, now));
 
         super.mvc.perform(get(BASE_URL))
@@ -85,7 +86,8 @@ public class StatisticsControllerTest extends BaseTests {
             .andExpect(jsonPath("$.max", is(amount)))
             .andExpect(jsonPath("$.min", is(amount)))
             .andExpect(jsonPath("$.count", is(1)))
-            .andDo(print());
+            .andDo(print())
+            .andDo(document(REST_DOCS_DIR));
 
         isTrue(buckets.size() == 1, "buckets should have 1 item");
     }
@@ -115,7 +117,8 @@ public class StatisticsControllerTest extends BaseTests {
             .andExpect(jsonPath("$.max", is(expMax)))
             .andExpect(jsonPath("$.min", is(expMin)))
             .andExpect(jsonPath("$.count", is(expCount)))
-            .andDo(print());
+            .andDo(print())
+            .andDo(document(REST_DOCS_DIR));
 
         isTrue(buckets.size() == 1, "buckets should have 1 item");
     }
@@ -135,7 +138,8 @@ public class StatisticsControllerTest extends BaseTests {
             .andExpect(jsonPath("$.max", is(12.30)))
             .andExpect(jsonPath("$.min", is(12.30)))
             .andExpect(jsonPath("$.count", is(10)))
-            .andDo(print());
+            .andDo(print())
+            .andDo(document(REST_DOCS_DIR));
 
         isTrue(buckets.size() == 1, "buckets should have 1 item");
     }
@@ -174,7 +178,8 @@ public class StatisticsControllerTest extends BaseTests {
             .andExpect(jsonPath("$.max", is(expMax)))
             .andExpect(jsonPath("$.min", is(expMin)))
             .andExpect(jsonPath("$.count", is(count)))
-            .andDo(print());
+            .andDo(print())
+            .andDo(document(REST_DOCS_DIR));
 
         isTrue(buckets.size() == 10, "buckets should have 10 items");
     }

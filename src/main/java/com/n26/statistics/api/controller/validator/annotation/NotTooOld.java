@@ -11,7 +11,10 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 /**
- * @author pnakano
+ * Annotation that checks if bucketAtInstantLessSecond Instant value is too old.
+ *
+ * It is based on the property app.transaction.timestamp.min-past-interval or the value in
+ * maxInterval
  */
 @Constraint(validatedBy = TooOldTimestampValidator.class)
 @Documented

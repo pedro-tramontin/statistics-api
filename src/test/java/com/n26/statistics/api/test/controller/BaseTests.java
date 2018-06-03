@@ -8,16 +8,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+/**
+ * Base class to test the controllers
+ */
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "build/snippets")
 @SpringBootTest
-public class BaseTests {
+class BaseTests {
+
+    final String REST_DOCS_DIR = "home";
 
     @Autowired
-    protected ObjectMapper mapper;
+    ObjectMapper mapper;
 
     @Autowired
-    protected MockMvc mvc;
+    MockMvc mvc;
 
 }

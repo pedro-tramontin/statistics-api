@@ -16,6 +16,9 @@ import java.util.stream.Collector;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+/**
+ * Helper collector to merge a list of {@link StatisticBucket}
+ */
 @Component
 @RequiredArgsConstructor
 public class StatisticsResponseCollector implements Collector<StatisticBucket,
@@ -23,10 +26,16 @@ public class StatisticsResponseCollector implements Collector<StatisticBucket,
 
     private final Utils utils;
 
+    /**
+     * Internal bucket
+     */
     private StatisticBucket bucket;
 
-    private Object lock = new Object();
+    private final Object lock = new Object();
 
+    /**
+     * Lambda to return this instance
+     */
     @Override
     public Supplier<StatisticsResponseCollector> supplier() {
 
@@ -34,22 +43,30 @@ public class StatisticsResponseCollector implements Collector<StatisticBucket,
         return () -> this;
     }
 
+    /**
+     * Lambda to add a bucket to this collector
+     */
     @Override
     public BiConsumer<StatisticsResponseCollector, StatisticBucket> accumulator() {
 
         return (builder, otherBucket) -> {
 
+            // Sincronizes the merge to enable concurrent access to this collector
             synchronized (lock) {
                 builder.bucket = merger(builder.bucket, otherBucket);
             }
         };
     }
 
+    /**
+     * Lambda that combines two collectors together
+     */
     @Override
     public BinaryOperator<StatisticsResponseCollector> combiner() {
 
         return (builder, other) -> {
 
+            // Sincronizes the merge to enable concurrent access to this collector
             synchronized (lock) {
                 builder.bucket = merger(builder.bucket, other.bucket);
             }
@@ -58,6 +75,10 @@ public class StatisticsResponseCollector implements Collector<StatisticBucket,
         };
     }
 
+    /**
+     * Lambda to create the {@link StatisticsResponse} based on the internal {@link
+     * StatisticBucket}
+     */
     @Override
     public Function<StatisticsResponseCollector, StatisticsResponse> finisher() {
 
@@ -79,13 +100,20 @@ public class StatisticsResponseCollector implements Collector<StatisticBucket,
         };
     }
 
+    /**
+     * This collector is {@link java.util.stream.Collector.Characteristics#UNORDERED} and {@link
+     * java.util.stream.Collector.Characteristics#CONCURRENT}
+     */
     @Override
     public Set<Characteristics> characteristics() {
 
         return Sets.immutableEnumSet(Characteristics.UNORDERED, Characteristics.CONCURRENT);
     }
 
-    public static StatisticsResponseCollector toStatisticsResponse(Utils utils) {
+    /**
+     * Creates a new instance of this collector
+     */
+    static StatisticsResponseCollector toStatisticsResponse(Utils utils) {
         return new StatisticsResponseCollector(utils);
     }
 }
