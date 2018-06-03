@@ -1,4 +1,4 @@
-package com.n26.statistics.api.controller.service.impl;
+package com.n26.statistics.api.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,13 +22,6 @@ public class StatisticBucket {
         this.count = 1L;
     }
 
-    public void add(double sum) {
-        updateSum(sum);
-        updateMaxIfGreater(sum);
-        updateMinIfLesser(sum);
-        updateCount(1);
-    }
-
     public StatisticBucket merge(StatisticBucket other) {
         updateSum(other.getSum());
         updateMaxIfGreater(other.getMax());
@@ -39,10 +32,6 @@ public class StatisticBucket {
     }
 
     public double getAvg() {
-        if (this.count == 0.0) {
-            return 0.0;
-        }
-
         return this.sum / this.count;
     }
 
@@ -64,5 +53,14 @@ public class StatisticBucket {
 
     private void updateCount(long count) {
         this.count += count;
+    }
+
+    public static StatisticBucket merger(StatisticBucket b1, StatisticBucket b2) {
+
+        if (b1 != null) {
+            return b1.merge(b2);
+        } else {
+            return b2;
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.n26.statistics.api.controller.service;
+package com.n26.statistics.api.service;
 
 import com.n26.statistics.api.controller.request.TransactionRequest;
 import com.n26.statistics.api.controller.response.StatisticsResponse;

@@ -10,6 +10,7 @@ public class TransactionRequest {
 
     private final Double amount;
 
+    @
     @NotTooOld
     private final Instant timestamp;
 

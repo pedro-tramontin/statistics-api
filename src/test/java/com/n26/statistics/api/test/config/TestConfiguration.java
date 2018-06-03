@@ -1,7 +1,7 @@
-package com.n26.statistics.api.controller;
+package com.n26.statistics.api.test.config;
 
-import com.n26.statistics.api.Utils;
-import com.n26.statistics.api.controller.service.impl.StatisticBucket;
+import com.n26.statistics.api.misc.Utils;
+import com.n26.statistics.api.service.impl.StatisticBucket;
 
 import java.util.HashMap;
 import java.util.Map;

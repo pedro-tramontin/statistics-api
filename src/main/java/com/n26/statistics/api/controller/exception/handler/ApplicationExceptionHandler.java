@@ -2,10 +2,7 @@ package com.n26.statistics.api.controller.exception.handler;
 
 import com.n26.statistics.api.controller.validator.annotation.NotTooOld;
 
-import java.util.Locale;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,8 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RequiredArgsConstructor
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationExceptionHandler.class);
-
     private final MessageSource messageSource;
 
     @Override
@@ -35,9 +30,6 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
 
             if (NotTooOld.class.getSimpleName().equals(fieldError.getCode())) {
-                LOGGER.warn(messageSource.getMessage("error.message.timestamp-too-old", null, Locale
-                    .getDefault()), fieldError.getRejectedValue());
-
                 return handleExceptionInternal(ex, null, headers, HttpStatus.NO_CONTENT, request);
             }
         }

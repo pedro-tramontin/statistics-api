@@ -1,17 +1,18 @@
 package com.n26.statistics.api.controller.response;
 
+import java.math.BigDecimal;
 import lombok.Data;
 
 @Data
 public class StatisticsResponse {
 
-    private final Double sum;
+    private final BigDecimal sum;
 
-    private final Double avg;
+    private final BigDecimal avg;
 
-    private final Double max;
+    private final BigDecimal max;
 
-    private final Double min;
+    private final BigDecimal min;
 
     private final Long count;
 

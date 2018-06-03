@@ -1,11 +1,12 @@
-package com.n26.statistics.api.controller.service.impl;
+package com.n26.statistics.api.service.impl;
 
-import static com.n26.statistics.api.controller.service.impl.StatisticsResponseCollector.toStatisticsResponse;
 
-import com.n26.statistics.api.Utils;
+import static com.n26.statistics.api.service.impl.StatisticsResponseCollector.toStatisticsResponse;
+
 import com.n26.statistics.api.controller.request.TransactionRequest;
 import com.n26.statistics.api.controller.response.StatisticsResponse;
-import com.n26.statistics.api.controller.service.StatisticsService;
+import com.n26.statistics.api.misc.Utils;
+import com.n26.statistics.api.service.StatisticsService;
 
 import java.time.Instant;
 import java.util.Map;
@@ -26,29 +27,26 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Value("${app.transaction.timestamp.min-past-interval}")
     private int maxInterval;
 
+    private Object lock = new Object();
+
     @Override
     public void put(TransactionRequest transactionRequest) {
 
         long bucketKey = utils.mapKey(transactionRequest.getTimestamp());
 
-        double amount = transactionRequest.getAmount();
+        StatisticBucket newBucket = new StatisticBucket(transactionRequest.getAmount());
 
-        StatisticBucket bucket = buckets.get(bucketKey);
-        if (bucket != null) {
-            bucket.add(amount);
-        } else {
-            buckets.put(bucketKey, new StatisticBucket(amount));
-        }
+        buckets.merge(bucketKey, newBucket, StatisticBucket::merger);
     }
 
     @Override
     public StatisticsResponse getStatistics(Instant now) {
 
-        return IntStream.range(0, maxInterval - 1)
+        return IntStream.range(0, maxInterval)
             .boxed()
             .map(i -> buckets.get(utils.mapKey(now) - i))
             .filter(Objects::nonNull)
-            .collect(toStatisticsResponse());
+            .collect(toStatisticsResponse(utils));
 
     }
 
