@@ -1,0 +1,14 @@
+#####
+# Application
+#
+app:
+  transaction:
+    timestamp:
+      min-past-interval: 60
+#####
+# Spring
+#
+spring:
+  jackson:
+    deserialization:
+      read-date-timestamps-as-nanoseconds: false
