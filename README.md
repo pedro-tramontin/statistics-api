@@ -23,7 +23,7 @@ From Linux or Mac command line:
 
     ./gradlew bootRun
 
-Frm Windows command line:
+From Windows command line:
 
     gradlew.bat bootRun
 
