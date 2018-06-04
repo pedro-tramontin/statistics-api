@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * Validator for the annotation {@link NotTooOld} to check if bucketAtInstantLessSecond Instant is too old.
+ * Validator for the annotation {@link NotTooOld} to check if Instant is too old.
  *
- * It checks if the Instant is older for bucketAtInstantLessSecond period that is indicated in the app.transaction
+ * It checks if the Instant is older for period that is indicated in the app.transaction
  * .timestamp.min-past-interval property or in the annotation.minPastInterval value.
  */
 @Component

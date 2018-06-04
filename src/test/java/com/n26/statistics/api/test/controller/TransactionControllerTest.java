@@ -36,8 +36,7 @@ public class TransactionControllerTest extends BaseTests {
             .contentType(APPLICATION_JSON_VALUE)
             .content(mapper.writeValueAsString(request)))
             .andExpect(status().isCreated())
-            .andDo(print())
-            .andDo(document(REST_DOCS_DIR));
+            .andDo(print());
 
         isTrue(buckets.size() == 1, "buckets should have 1 item");
     }
@@ -54,8 +53,7 @@ public class TransactionControllerTest extends BaseTests {
             .contentType(APPLICATION_JSON_VALUE)
             .content(mapper.writeValueAsString(request)))
             .andExpect(status().isNoContent())
-            .andDo(print())
-            .andDo(document(REST_DOCS_DIR));
+            .andDo(print());
 
         isTrue(buckets.size() == 0, "buckets should be empty");
     }

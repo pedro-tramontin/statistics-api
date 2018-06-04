@@ -36,7 +36,7 @@ public class Utils {
     }
 
     /**
-     * Transforms bucketAtInstantLessSecond double value to BigDecimal and scales it to 2 decimals.
+     * Transforms double value to BigDecimal and scales it to 2 decimals.
      */
     public BigDecimal toBigDecimalScaledToTwo(Double value) {
         return BigDecimal.valueOf(value).setScale(2, RoundingMode.HALF_UP);

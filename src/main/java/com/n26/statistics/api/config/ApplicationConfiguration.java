@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class ApplicationConfiguration {
 
     /**
-     * Uses bucketAtInstantLessSecond ConcurrentHashMap to store the statistics buckets
+     * Uses ConcurrentHashMap to store the statistics buckets
      */
     @Bean
     public Map<Long, StatisticBucket> bucketsMap() {

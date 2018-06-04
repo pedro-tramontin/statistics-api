@@ -17,8 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 class BaseTests {
 
-    final String REST_DOCS_DIR = "home";
-
     @Autowired
     ObjectMapper mapper;
 

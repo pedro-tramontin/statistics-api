@@ -34,7 +34,7 @@ public class TransactionController {
 
     @ApiOperation(value = "Insert new transaction", //
         notes =
-            "Inserts bucketAtInstantLessSecond new transaction that will be used to generate statistics.")
+            "Inserts new transaction that will be used to generate statistics.")
     @ApiResponses({
         @ApiResponse(code = 201, message = "Success"),
         @ApiResponse(code = 204, message = "Transaction older than 60 seconds")
